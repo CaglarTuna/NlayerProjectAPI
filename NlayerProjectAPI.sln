@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30711.63
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NlayerProject.API", "NlayerProjectAPI\NlayerProject.API.csproj", "{4BF3F4FF-7597-4D9E-A547-38E1184EF7CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLayerProject.API", "NlayerProjectAPI\NLayerProject.API.csproj", "{4BF3F4FF-7597-4D9E-A547-38E1184EF7CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLayerProject.Core", "NLayerProject.Core\NLayerProject.Core.csproj", "{5B644373-3EA4-4EFF-87E5-4604B7029226}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLayerProject.Core", "NLayerProject.Core\NLayerProject.Core.csproj", "{5B644373-3EA4-4EFF-87E5-4604B7029226}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLayerProject.Data", "NLayerProject.Data\NLayerProject.Data.csproj", "{65447780-5134-426C-9212-0C19C185753F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLayerProject.Data", "NLayerProject.Data\NLayerProject.Data.csproj", "{65447780-5134-426C-9212-0C19C185753F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLayerProject.Service", "NLayerProject.Service\NLayerProject.Service.csproj", "{5081084C-22E3-4568-AD28-194DCA5C3318}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLayerProject.Service", "NLayerProject.Service\NLayerProject.Service.csproj", "{5081084C-22E3-4568-AD28-194DCA5C3318}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

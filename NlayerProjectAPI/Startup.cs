@@ -9,8 +9,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using NLayerProject.API.DTOs;
+using NLayerProject.API.Extensions;
+using NLayerProject.API.Filters;
+using NLayerProject.Core.Repositories;
+using NLayerProject.Core.Services;
+using NLayerProject.Core.UnitOfWorks;
+using NLayerProject.Data;
+using NLayerProject.Data.Repositories;
+using NLayerProject.Data.UnitOfWork;
+using NLayerProject.Service.Services;
 
-namespace NlayerProjectAPI
+namespace NLayerProject.API
 {
     public class Startup
     {
@@ -24,7 +39,24 @@ namespace NlayerProjectAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(Startup));
+            services.AddScoped(typeof(IRepository<>),typeof(Repository<>));
+            services.AddScoped(typeof(IService<>), typeof(Service<>));
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<NotFoundFilter>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddDbContext<AppDbContext>(opts =>
+            {
+                opts.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"],o=>o.MigrationsAssembly("NLayerProject.Data"));
+            });
+
             services.AddControllers();
+            services.Configure<ApiBehaviorOptions>(opts =>
+            {
+                opts.SuppressModelStateInvalidFilter = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -34,6 +66,8 @@ namespace NlayerProjectAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCustomException();
 
             app.UseRouting();
 
