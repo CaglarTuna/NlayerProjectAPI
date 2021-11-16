@@ -16,19 +16,20 @@ namespace NLayerProject.API.Controllers
     {
         private readonly IProductService _productService;
         private readonly IOrderService _orderService;
-        private readonly IPersonService _personService;
-        public OrderController(IProductService productService, IPersonService personService, IOrderService orderService)
+        private readonly IBasketService _basketService;
+        public OrderController(IProductService productService, IBasketService basketService, IOrderService orderService)
         {
             _orderService = orderService;
             _productService = productService;
-            _personService = personService;
+            _basketService = basketService;
         }
         [HttpPost]
         public async Task<IActionResult> Buy(BasketDtoSpecific basketDtoSpecific)
         {
             try
             {
-                var products = await _productService.GetByIdAsync(basketDtoSpecific.pId);
+                var product = await _productService.GetByIdAsync(basketDtoSpecific.pId);
+                var basket = await _basketService.GetByIdAsync(basketDtoSpecific.Id);
                 OrderDto order = new OrderDto
                 {
                     ProductName = basketDtoSpecific.ProductName,
@@ -36,9 +37,10 @@ namespace NLayerProject.API.Controllers
                     PersonName = basketDtoSpecific.Name,
                     TotalPrice = basketDtoSpecific.TotalPrice
                 };
-
-                products.Stock -= basketDtoSpecific.Quantity;
-                _productService.Update(products);
+                basket.Status = "Bought";
+                product.Stock -= basketDtoSpecific.Quantity;
+                _productService.Update(product);
+                _basketService.Update(basket);
                 await _orderService.AddAsync(new Order {BasketId=basketDtoSpecific.Id, TotalPrice=basketDtoSpecific.TotalPrice });
                 return Ok(order);
             }

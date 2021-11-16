@@ -67,7 +67,8 @@ namespace NLayerProject.API.Controllers
                 {
                     ProductId=products.Id,
                     PersonId=currentUser.Id,
-                    Number=quantity
+                    Number=quantity,
+                    Status="Pending"
                 };
                 try
                 {
