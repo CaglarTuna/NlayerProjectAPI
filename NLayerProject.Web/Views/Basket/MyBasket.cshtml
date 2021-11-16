@@ -1,0 +1,62 @@
+﻿@model IEnumerable<BasketDtoSpecific>
+<h1>My Basket</h1>
+<link href="libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>ProductName</th>
+            <th>Quantity</th>
+            <th>TotalPrice</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr id="item_@item.Id">
+                <td>@item.Name</td>
+                <td>@item.SurName</td>
+                <td>@item.ProductName</td>
+                <td>@item.Quantity</td>
+                <td>@item.TotalPrice</td>
+                <td>
+                    @*<a asp-action="Update" asp-route-id="@item.Id">Update</a>*@
+                    <a>Buy</a>
+                    <a class="btn btn-primary" onclick="deleteProduct(@item.Id)">Delete</a>
+                </td>
+                @*<td>
+                        <a class="btn btn-primary" onclick="getData(@item.Id)">Add Basket</a>
+                    </td>*@
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script src="libs/jquery/jquery.min.js"></script>
+<script src="libs/bootstrap/js/bootstrap.min.js"></script>
+<script>
+    deleteProduct = (id) => {
+        if (confirm("Are You Sure?")) {
+            $.ajax({
+                url: 'http://localhost:57362/api/Basket/' + id,
+                method: 'DELETE',
+                success: function (response) {
+                    console.log("data", response);
+                    $('#item_' + id).remove();
+                    alert("Deleted");
+                    refresh();
+                },
+                error: function (err) {
+                    console.log("err", err);
+                }
+            });
+        }
+    }
+</script>
+<script>
+    refresh = () => {
+        this.location.reload();
+    }
+</script>

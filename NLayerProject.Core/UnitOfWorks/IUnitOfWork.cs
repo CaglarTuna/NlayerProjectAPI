@@ -10,6 +10,8 @@ namespace NLayerProject.Core.UnitOfWorks
     {
         IProductRepository Products { get; }
         ICategoryRepository Categories { get; }
+        IBasketRepository Baskets { get; }
+        IPersonRepository Persons { get; }
         Task CommitAsync();
         void Commit();
     }

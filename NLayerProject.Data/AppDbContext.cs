@@ -17,7 +17,9 @@ namespace NLayerProject.Data
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories{ get; set; }
+        public DbSet<Basket> Baskets{ get; set; }
         public DbSet<Person> Persons { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -29,6 +31,10 @@ namespace NLayerProject.Data
 
             modelBuilder.Entity<Person>().HasKey(x => x.Id);
             modelBuilder.Entity<Person>().Property(x => x.Id).UseIdentityColumn();
+            modelBuilder.Entity<Order>().HasKey(x => x.Id);
+            modelBuilder.Entity<Order>().Property(x => x.Id).UseIdentityColumn();
+            modelBuilder.Entity<Basket>().HasKey(x => x.Id);
+            modelBuilder.Entity<Basket>().Property(x => x.Id).UseIdentityColumn();
             modelBuilder.Entity<Person>().Property(x => x.Name).HasMaxLength(100);
             modelBuilder.Entity<Person>().Property(x => x.Surname).HasMaxLength(100);
         }

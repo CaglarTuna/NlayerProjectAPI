@@ -1,0 +1,138 @@
+﻿@model IEnumerable<ProductDto>
+<textarea hidden id="x">@User.Identity.Name</textarea>
+<h1>Products</h1>
+<link href="libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<a class="btn btn-primary mb-3" asp-action="Create">Add Product</a>
+
+<form method="post">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr id="item_@item.Id">
+                    <td hidden>
+                        <input hidden asp-for="@item.Id" />
+                    </td>
+                    <td>@item.Name</td>
+                    <td>@item.Price</td>
+                    <td>@item.Stock</td>
+                    <td>
+                        <input id="quantity_@item.Id" type="number" placeholder="Quantity" min="1" max="@item.Stock" />
+                    </td>
+                    @if (User.IsInRole("admin"))
+                    {
+                        <td>
+                            <a asp-action="Update" asp-route-id="@item.Id">Update</a>
+                            <a class="btn btn-primary" onclick="deleteProduct(@item.Id)" >Delete</a>
+                        </td>
+                    }
+                    <td>
+                        <a class="btn btn-primary" onclick="getData(@item.Id)">Add Basket</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
+<script src="libs/jquery/jquery.min.js"></script>
+<script src="libs/bootstrap/js/bootstrap.min.js"></script>
+<script>
+    deleteProduct = (id) => {
+        if (confirm("Are You Sure?")) {
+
+            $.ajax({
+                url: 'http://localhost:57362/api/Product/' + id,
+                method: 'DELETE',
+                success: function (response) {
+                    console.log("data", response);
+                    $('#item_' + id).remove();
+                    alert("Deleted");
+                },
+                error: function (err) {
+                    console.log("err", err);
+                }
+            });
+        }
+    }
+    addBasket = (id) => {
+        $.ajax({
+            url: 'http://localhost:57362/api/Basket/',
+            method: 'POST',
+            success: function (response) {
+                console.log("data", response);
+                $('#item_' + id).add();
+                //alert("Deleted");
+            },
+            error: function (err) {
+                console.log("err", err);
+            }
+        });
+    }
+</script>
+<script>
+    getData = (id) => {
+        try {
+            var value = parseInt($('#quantity_'+id).val());
+            var mail = $('#x').val();
+            alert(mail);
+            var data = {
+                id: parseInt(id),
+                quantity: value,
+                mail: mail
+            }
+        }
+        catch (e) {
+            alert("x");
+        }
+
+        if (confirm("Ok")) {
+            $.ajax({
+                url: 'http://localhost:57362/api/Basket/' + parseInt(id) + '/' + parseInt($('#quantity_'+id).val()) + '/' + $('#x').val(),
+                method: 'POST',
+                data: JSON.stringify(data),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                success: function (response) {
+                    console.log('response', response);
+                    alert("Added");
+                    refreshData();
+                },
+                error: function (err) {
+                    console.log("err", err);
+                    alert("Hata", err);
+                }
+            });
+        }
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        refreshData();
+    });
+    refreshData = () => {
+        try {
+            $.ajax({
+                url: 'http://localhost:57362/api/Product',
+                method: 'GET',
+                success: this.location.reload(),
+                error: function (err) {
+                    console.log("err", err);
+                    alert("Hata", err);
+                }
+            })
+        } catch {
+            alert("HATA");
+        }
+    }
+</script>

@@ -14,6 +14,7 @@ using NLayerProject.Core.Models;
 namespace NLayerProject.API.Controllers
 {
     [Route("api/[controller]")]
+    [Produces("application/json")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
@@ -59,8 +60,8 @@ namespace NLayerProject.API.Controllers
            return Created(string.Empty, _mapper.Map<CategoryDto>(category));
         }
 
-        [HttpPut]
-        public IActionResult Update(CategoryDto categoryDto)
+        [HttpPut("{categoryDto}")]
+        public IActionResult Update([FromBody]CategoryDto categoryDto)
         {
             var category = _categoryService.Update(_mapper.Map<Category>(categoryDto));
 

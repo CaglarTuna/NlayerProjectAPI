@@ -13,9 +13,15 @@ namespace NLayerProject.Data.UnitOfWork
         private readonly AppDbContext _context;
         private ProductRepository _productRepository;
         private CategoryRepository _categoryRepository;
+        private BasketRepository _basketRepository;
+        private PersonRepository _personRepository;
 
         public IProductRepository Products => _productRepository ??= new ProductRepository(_context);
         public ICategoryRepository Categories => _categoryRepository ??= new CategoryRepository(_context);
+
+        public IBasketRepository Baskets => _basketRepository ??= new BasketRepository(_context);
+
+        public IPersonRepository Persons => _personRepository ??= new PersonRepository(_context);
 
         public UnitOfWork(AppDbContext appDbContext)
         {
