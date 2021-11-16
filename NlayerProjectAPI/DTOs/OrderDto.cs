@@ -7,7 +7,7 @@ namespace NLayerProject.API.DTOs
 {
     public class OrderDto
     {
-        public int Number { get; set; }
+        public int Quantity { get; set; }
         public decimal TotalPrice{ get; set; }
         public string ProductName { get; set; }
         public string PersonName{ get; set; }

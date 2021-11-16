@@ -42,6 +42,8 @@ namespace NLayerProject.API.Controllers
                 BasketDtoSpecific basket = new BasketDtoSpecific()
                 {
                     Id=item.Id,
+                    pId = item.ProductId,
+                    uId= item.PersonId,
                     Name = _personService.GetByIdAsync(item.PersonId).Result.Name,
                     SurName = _personService.GetByIdAsync(item.PersonId).Result.Surname,
                     Quantity = item.Number,
@@ -70,8 +72,6 @@ namespace NLayerProject.API.Controllers
                 try
                 {
                     var x = await _basketService.AddAsync(basket);
-                    products.Stock -= quantity;
-                    _productService.Update(products);
                 }
                 catch (Exception ex)
                 {

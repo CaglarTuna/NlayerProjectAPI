@@ -9,6 +9,7 @@ namespace NLayerProject.Core.UnitOfWorks
     public interface IUnitOfWork
     {
         IProductRepository Products { get; }
+        IOrderRepository Orders { get; }
         ICategoryRepository Categories { get; }
         IBasketRepository Baskets { get; }
         IPersonRepository Persons { get; }

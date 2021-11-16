@@ -8,6 +8,8 @@ namespace NLayerProject.API.DTOs
     public class BasketDtoSpecific
     {
         public int Id{ get; set; }
+        public int pId{ get; set; }
+        public int uId{ get; set; }
         public string ProductName { get; set; }
         public string Name { get; set; }
         public string SurName { get; set; }

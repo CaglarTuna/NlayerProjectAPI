@@ -15,28 +15,31 @@ namespace NLayerProject.API.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IProductService _productService;
+        private readonly IOrderService _orderService;
         private readonly IPersonService _personService;
-        public OrderController(IProductService productService, IPersonService personService)
+        public OrderController(IProductService productService, IPersonService personService, IOrderService orderService)
         {
+            _orderService = orderService;
             _productService = productService;
             _personService = personService;
         }
-        public async Task<IActionResult> Buy([FromBody] BasketDto basketDto)
+        [HttpPost]
+        public async Task<IActionResult> Buy(BasketDtoSpecific basketDtoSpecific)
         {
             try
             {
-                var products = await _productService.GetByIdAsync(basketDto.pId);
+                var products = await _productService.GetByIdAsync(basketDtoSpecific.pId);
                 OrderDto order = new OrderDto
                 {
-                    ProductName = _productService.GetByIdAsync(basketDto.pId).Result.Name,
-                    CategoryName = _productService.GetByIdAsync(basketDto.pId).Result.Category.Name,
-                    Number = basketDto.number,
-                    PersonName = _personService.GetByIdAsync(basketDto.uId).Result.Name,
-                    TotalPrice = basketDto.number * _productService.GetByIdAsync(basketDto.pId).Result.Price
+                    ProductName = basketDtoSpecific.ProductName,
+                    Quantity = basketDtoSpecific.Quantity,
+                    PersonName = basketDtoSpecific.Name,
+                    TotalPrice = basketDtoSpecific.TotalPrice
                 };
 
-                products.Stock -= basketDto.number;
+                products.Stock -= basketDtoSpecific.Quantity;
                 _productService.Update(products);
+                await _orderService.AddAsync(new Order {BasketId=basketDtoSpecific.Id, TotalPrice=basketDtoSpecific.TotalPrice });
                 return Ok(order);
             }
             catch (Exception)

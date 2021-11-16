@@ -15,6 +15,7 @@ namespace NLayerProject.Data.UnitOfWork
         private CategoryRepository _categoryRepository;
         private BasketRepository _basketRepository;
         private PersonRepository _personRepository;
+        private OrderRepository _orderRepository;
 
         public IProductRepository Products => _productRepository ??= new ProductRepository(_context);
         public ICategoryRepository Categories => _categoryRepository ??= new CategoryRepository(_context);
@@ -22,6 +23,8 @@ namespace NLayerProject.Data.UnitOfWork
         public IBasketRepository Baskets => _basketRepository ??= new BasketRepository(_context);
 
         public IPersonRepository Persons => _personRepository ??= new PersonRepository(_context);
+
+        public IOrderRepository Orders => _orderRepository ??= new OrderRepository(_context);
 
         public UnitOfWork(AppDbContext appDbContext)
         {

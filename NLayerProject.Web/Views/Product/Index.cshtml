@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<ProductDto>
+
 <textarea hidden id="x">@User.Identity.Name</textarea>
 <h1>Products</h1>
 <link href="libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
@@ -18,27 +19,27 @@
 
             @foreach (var item in Model)
             {
-                <tr id="item_@item.Id">
-                    <td hidden>
-                        <input hidden asp-for="@item.Id" />
-                    </td>
-                    <td>@item.Name</td>
-                    <td>@item.Price</td>
-                    <td>@item.Stock</td>
+            <tr id="item_@item.Id">
+                <td hidden>
+                    <input hidden asp-for="@item.Id" />
+                </td>
+                <td>@item.Name</td>
+                <td>@item.Price</td>
+                <td>@item.Stock</td>
+                <td>
+                    <input id="quantity_@item.Id" type="number" placeholder="Quantity" min="1" max="@item.Stock" />
+                </td>
+                @if (User.IsInRole("admin"))
+                {
                     <td>
-                        <input id="quantity_@item.Id" type="number" placeholder="Quantity" min="1" max="@item.Stock" />
+                        <a asp-action="Update" asp-route-id="@item.Id">Update</a>
+                        <a class="btn btn-primary" onclick="deleteProduct(@item.Id)" >Delete</a>
                     </td>
-                    @if (User.IsInRole("admin"))
-                    {
-                        <td>
-                            <a asp-action="Update" asp-route-id="@item.Id">Update</a>
-                            <a class="btn btn-primary" onclick="deleteProduct(@item.Id)" >Delete</a>
-                        </td>
-                    }
-                    <td>
-                        <a class="btn btn-primary" onclick="getData(@item.Id)">Add Basket</a>
-                    </td>
-                </tr>
+                }
+                <td>
+                    <a class="btn btn-primary" onclick="getData(@item.Id)">Add Basket</a>
+                </td>
+            </tr>
             }
         </tbody>
     </table>

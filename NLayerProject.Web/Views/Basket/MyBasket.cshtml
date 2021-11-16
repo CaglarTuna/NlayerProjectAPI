@@ -15,21 +15,23 @@
 
         @foreach (var item in Model)
         {
-            <tr id="item_@item.Id">
-                <td>@item.Name</td>
-                <td>@item.SurName</td>
-                <td>@item.ProductName</td>
-                <td>@item.Quantity</td>
-                <td>@item.TotalPrice</td>
-                <td>
-                    @*<a asp-action="Update" asp-route-id="@item.Id">Update</a>*@
-                    <a>Buy</a>
-                    <a class="btn btn-primary" onclick="deleteProduct(@item.Id)">Delete</a>
-                </td>
-                @*<td>
-                        <a class="btn btn-primary" onclick="getData(@item.Id)">Add Basket</a>
-                    </td>*@
-            </tr>
+        <tr id="item_@item.Id">
+            <td id="Name_@item.Id">@item.Name</td>
+            <td id="Surname_@item.Id">@item.SurName</td>
+            <td id="Productname_@item.Id">@item.ProductName</td>
+            <td id="Quantity_@item.Id">@item.Quantity</td>
+            <td id="Totalprice_@item.Id">@item.TotalPrice</td>
+            <td hidden id="uid_@item.Id">@item.uId</td>
+            <td hidden id="pid_@item.Id">@item.pId</td>
+            <td>
+                @*<a asp-action="Update" asp-route-id="@item.Id">Update</a>*@
+                <a class="btn btn-primary" onclick="Buy(@item.Id)">Buy</a>
+                <a class="btn btn-primary" onclick="deleteProduct(@item.Id)">Delete</a>
+            </td>
+            @*<td>
+            <a class="btn btn-primary" onclick="getData(@item.Id)">Add Basket</a>
+        </td>*@
+        </tr>
         }
     </tbody>
 </table>
@@ -58,5 +60,47 @@
 <script>
     refresh = () => {
         this.location.reload();
+    }
+</script>
+<script>
+    Buy = (id) => {
+        var name = $('#Name_' + id).text();
+        var pid = parseInt($('#pid_' + id).text());
+        var uid = parseInt($('#uid_' + id).text());
+        var surname = $('#Surname_' + id).text();
+        var productname = $('#Productname_' + id).text();
+        var quantity = parseInt($('#Quantity_' + id).text());
+        var totalprice = parseFloat($('#Totalprice_' + id).text());
+
+        var data = {
+            Id = id,
+            Name: name,
+            pid: pid,
+            uid: uid,
+            Surname: surname,
+            Productname: productname,
+            Quantity: quantity,
+            Totalprice: totalprice
+        }
+        if (confirm("Ok")) {
+            $.ajax({
+                url: 'http://localhost:57362/api/Order/',
+                method: 'POST',
+                data: JSON.stringify(data),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                success: function (response) {
+                    console.log('response', response);
+                    alert("Added");
+                    refreshData();
+                },
+                error: function (err) {
+                    console.log("err", err);
+                    alert("Hata", err);
+                }
+            });
+        }
     }
 </script>

@@ -45,7 +45,7 @@ namespace NLayerProject.API
             services.AddScoped(typeof(IService<>), typeof(Service<>));
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
-            //services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IPersonService, PersonService>();
             services.AddScoped<IBasketService, BasketService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
